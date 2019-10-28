@@ -12,7 +12,7 @@
 #define ESPACO 32
 
 Panel::Panel() {
-    Console::windows( 20, 50);
+    Console::windows( 20, 80);
 }
 
 Panel::~Panel() {
