@@ -4,11 +4,20 @@
 class Player {
 public:
     Player();
-    Player(const Player& orig);
-    virtual ~Player();
-private:
+    ~Player();
+    
+    void setLose(int lose);
+    void setWin(int win);
+    void setNome(char nome[]);
+    int isLose();
+    int isWin();
+    char* getNome();    
 
+private:
+    char nome[50];
+    int win;
+    int lose;
 };
 
-#endif /* PLAYER_H */
+#endif
 

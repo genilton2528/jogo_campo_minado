@@ -13,6 +13,9 @@ public:
     void fillField();
     int** getField();
     int** getHidden();
+    int getX();
+    int getY();
+    int play();
 private:
     int **field;
     int **hidden;
