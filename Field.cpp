@@ -4,10 +4,8 @@
 #include <time.h>
 
 Field::Field() {
-    this->x = 9;
-    this->y = 9;
-    this->bomb = 10;
-    this->allocField();
+    this->field  = NULL;
+    this->hidden = NULL;
 }
 
 Field::Field(int x, int y, int bomb) {
@@ -18,6 +16,7 @@ Field::Field(int x, int y, int bomb) {
 }
 
 Field::~Field() {
+    this->freeField();
 }
 
 void Field::allocField() {
