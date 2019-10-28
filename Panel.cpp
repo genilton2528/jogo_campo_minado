@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include <windows.h>
 #include <conio.h>
 #include <stdio.h>
 #include "Panel.h"
+#include "Console.h"
 #define UP 72
 #define DOWN 80
 #define RIGHT 77
@@ -12,7 +12,7 @@
 #define ESPACO 32
 
 Panel::Panel() {
-    this->windows( 60, 20);
+    Console::windows( 60, 20);
 }
 
 Panel::~Panel() {
@@ -54,22 +54,4 @@ int Panel::menu() {
         }
     }
     return 0;
-}
-
-void Panel::colorTex(int COLOR) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR);
-}
-
-void Panel::windows(int x, int y) {
-    system("title Jogo Campo Minado - Genilton");
-    system("color 71");
-
-    COORD outbuff;
-    outbuff.X = x;
-    outbuff.Y = y;
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleScreenBufferSize(hConsole, outbuff);
-    Sleep(130);
-    SMALL_RECT windowSize = {(short) 0, (short) 0, (short) --x, (short) --y};
-    SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 }
