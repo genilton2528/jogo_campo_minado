@@ -12,42 +12,59 @@
 #define ESPACO 32
 
 Panel::Panel() {
-    Console::windows( 60, 20);
+    Console::windows( 20, 50);
 }
 
 Panel::~Panel() {
 }
 
 int Panel::menu() {
-    int arrow = 49;
+    int x = 8;
     int opc;
-    char menu[] = "\t\t1  MENU           \n\n"
-                  "\t\t2  JOGAR           \n"
-                  "\t\t3  NOVO TABULEIRO  \n"
-                  "\t\t4  RECORDES        \n"
-                  "\t\t5  SAIR            \n";
+    
+    system("cls");
+    Console::gotoxy( 5, 10);
+    printf("MENU");
+    Console::gotoxy( 8, 10);
+    printf("JOGAR");
+    Console::gotoxy( 9, 10);
+    printf("PERSONALIZADO");
+    Console::gotoxy( 10, 10);
+    printf("RECORDES");
+    Console::gotoxy( 11, 10);
+    printf("SAIR");
+    Console::gotoxy( x, 8);
+    printf(">");
+    Console::gotoxy( 20, 50);
+                
     while(true){
-        system("cls");
-        printf("\n\n\n");
-        for(int i = 0 ; i < 110; i++){
-            if(menu[i] == arrow){
-                printf(">");
-                continue;
-            }
-            if(menu[i] == 49 || menu[i] == 50 ||menu[i] == 51 ||menu[i] == 52 ||menu[i] == 53){
-                printf(" ");
-                continue;
-            }
-            printf("%c", menu[i]);
-        }
         setbuf( stdin, NULL);
         opc = getch();
         switch(opc){
             case UP:
-                arrow--;
+                Console::gotoxy( x, 8);
+                printf(" ");
+                if(x == 8){
+                    x = 12;
+                }
+                x--;
+                Console::gotoxy( x, 8);
+                printf(">");   
+                Console::gotoxy( 20, 50);
             break;
             case DOWN:
-                arrow++;
+                Console::gotoxy( x, 8);
+                printf(" ");
+                if(x == 11){
+                    x = 7;
+                }
+                x++;
+                Console::gotoxy( x, 8);
+                printf(">");        
+                Console::gotoxy( 20, 50);
+            break;
+            case ENTER:
+                return  x-7;               
             break;
             default:
             break;

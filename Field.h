@@ -4,11 +4,22 @@
 class Field {
 public:
     Field();
-    Field(const Field& orig);
-    virtual ~Field();
+    Field(int x, int y, int bomb);
+    ~Field();
+    void allocField();
+    void freeField();
+    void printField();
+    void setField(int x, int y, int bomb);
+    void fillField();
+    int** getField();
+    int** getHidden();
 private:
-
+    int **field;
+    int **hidden;
+    int x;
+    int y;
+    int bomb;
 };
 
-#endif /* FIELD_H */
+#endif
 

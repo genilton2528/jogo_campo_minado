@@ -8,14 +8,14 @@ Console::~Console() {
 }
 
 void Console::gotoxy(int x, int y){
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){--y,--x});
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){ (SHORT)--y, (SHORT)--x});
 }
 
 void Console::colorTex(int COLOR) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), COLOR);
 }
 
-void Console::windows(int x, int y) {
+void Console::windows(int y, int x) {
     system("title Jogo Campo Minado - Genilton");
     system("color 71");
 
