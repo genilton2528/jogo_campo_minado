@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Arquivos de Cabeçalho"
+                   projectFiles="true">
+      <itemPath>Console.h</itemPath>
+      <itemPath>Field.h</itemPath>
+      <itemPath>Panel.h</itemPath>
+      <itemPath>Player.h</itemPath>
+      <itemPath>Records.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Arquivos de Código-Fonte"
+                   projectFiles="true">
+      <itemPath>Console.cpp</itemPath>
+      <itemPath>Field.cpp</itemPath>
+      <itemPath>Panel.cpp</itemPath>
+      <itemPath>Player.cpp</itemPath>
+      <itemPath>Records.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Arquivos de Recurso"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Arquivos de Teste"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Arquivos Importantes"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+      </compileType>
+      <item path="Console.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Console.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Field.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Field.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Panel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Panel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Records.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Records.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="Console.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Console.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Field.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Field.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Panel.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Panel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Records.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Records.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

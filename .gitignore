@@ -1,0 +1,7 @@
+build/
+dist/
+nbproject/
+.dep.inc
+*.lnk
+*.exe
+Makefile
