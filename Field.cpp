@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <conio.h>
 
 #include "Panel.h"
 #include "Console.h"
@@ -14,6 +15,8 @@
 #define ENTER 13
 #define ESC 27
 #define ESPACO 32
+#define BLUE 113
+#define GREEN 122
 
 Field::Field() {
     this->field = NULL;
@@ -21,8 +24,8 @@ Field::Field() {
 }
 
 Field::Field(int x, int y, int bomb) {
-    this->x = x;
-    this->y = y;
+    this->row = x;
+    this->column = y;
     this->bomb = bomb;
     this->allocField();
 }
@@ -32,46 +35,34 @@ Field::~Field() {
 }
 
 void Field::allocField() {
-//    try {
-        this->field = (int **) calloc(this->x, sizeof (int *));
-        this->hidden = (int **) calloc(this->x, sizeof (int *));
+    this->field = (int **) calloc(this->row, sizeof (int *));
+    this->hidden = (int **) calloc(this->row, sizeof (int *));
 
-        if (this->field == NULL || this->hidden == NULL) {
+    if (this->field == NULL || this->hidden == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < column; i++) {
+        this->field[i] = (int*) calloc(this->column, sizeof (int));
+        this->hidden[i] = (int*) calloc(this->column, sizeof (int));
+        if (this->field[i] == NULL || this->hidden[i] == NULL) {
+            this->field = NULL;
+            this->hidden = NULL;
             return;
         }
-
-        for (int i = 0; i < y; i++) {
-            this->field[i] = (int*) calloc(this->y, sizeof (int));
-            this->hidden[i] = (int*) calloc(this->y, sizeof (int));
-            if (this->field[i] == NULL || this->hidden[i] == NULL) {
-                this->field = NULL;
-                this->hidden = NULL;
-                return;
-            }
-        }
-//    } catch (std::bad_alloc& ba) {
-//        system("cls");
-//        printf("\n\n\tFalha na criacao do campo: Nao foi possivel alocar memoria!");
-//        setbuf(stdin, NULL);
-//        getch();
-//    } catch (...) {
-//        system("cls");
-//        printf("\n\n\tFalha na criacao do campo");
-//        setbuf(stdin, NULL);
-//        getch();
-//    }
+    }
 }
 
 void Field::freeField() {
     if (this->field != NULL) {
-        for (int i = 0; i < this->x; i++) {
+        for (int i = 0; i < this->row; i++) {
             free(this->field[i]);
         }
         free(this->field);
     }
     this->field = NULL;
     if (this->hidden != NULL) {
-        for (int i = 0; i < this->x; i++) {
+        for (int i = 0; i < this->row; i++) {
             free(this->hidden[i]);
         }
         free(this->hidden);
@@ -88,8 +79,8 @@ int** Field::getHidden() {
 }
 
 void Field::printField() {
-    for (int i = 0; i < this->x; i++) {
-        for (int j = 0; j < this->y; j++) {
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->column; j++) {
             if (this->field[i][j] > 9) {
                 printf(" %d", this->field[i][j]);
                 continue;
@@ -99,8 +90,8 @@ void Field::printField() {
         printf("\n");
     }
     printf("\n\n\n\n");
-    for (int i = 0; i < this->x; i++) {
-        for (int j = 0; j < this->y; j++) {
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->column; j++) {
             printf("%d", this->hidden[i][j]);
         }
         printf("\n");
@@ -108,8 +99,8 @@ void Field::printField() {
 }
 
 void Field::setField(int x, int y, int bomb) {
-    this->x = x;
-    this->y = y;
+    this->row = x;
+    this->column = y;
     this->bomb = bomb;
     this->freeField();
     this->allocField();
@@ -120,8 +111,8 @@ void Field::fillField() {
     int x, y;
     srand(time(NULL));
     while (count < this->bomb) {
-        x = rand() % (this->x - 1);
-        y = rand() % (this->y - 1);
+        x = rand() % (this->row - 1);
+        y = rand() % (this->column - 1);
         if (this->field[x][y] > 8) {
             srand(time(NULL) * count);
             continue;
@@ -145,53 +136,234 @@ void Field::fillField() {
 
         count++;
     }
-    for (int i = 0; i < this->x; i++) {
-        for (int j = 0; j < this->y; j++) {
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->column; j++) {
             this->hidden[i][j] = 1;
         }
     }
 }
 
 int Field::getX() {
-    return this->x;
+    return this->row;
 }
 
 int Field::getY() {
-    return this->y;
+    return this->column;
 }
 
-int Field::play() {
-    Panel panel;
-    panel.header();
+void Field::drawField() {
+    Panel::header();
     int x = 6, y = 10;
 
-    for (int i = 0; i < this->x; i++) {
-        for (int j = 0; j < this->y; j++) {
-            if (i == 0 && j == 0) {
-                Console::colorTex(90);
-                Console::gotoxy(x, y);
-                printf("%c%c", 219, 219);
-                Console::colorTex(113);
-                y += 2;
-                continue;
-            }
-            if (this->hidden[i][j] == 1) {
-                Console::gotoxy(x, y);
-                printf("%c%c", 219, 219);
-                y += 2;
-                continue;
-            }
-            if (this->field[i][j] == 0) {
-                printf(" ~");
-                y += 2;
-                continue;
-            }
-            printf(" %d", this->field[i][j]);
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->column; j++) {
+            Console::gotoxy(x, y);
+            this->printBlock(i, j, BLUE);
             y += 2;
         }
         x++;
         y = 10;
     }
-    Console::gotoxy(x, 50);
+    Console::gotoxy(x + 2, 1);
+    printf("\t[ESPACO] Marca Bandeira\n\t[ENTER] Descobre\n\t[ESC] Sair");
+}
+
+void Field::printBlock(int x, int y, int color) {
+    Console::colorTex(color);
+    if (this->hidden[x][y] == 1) {
+        printf("%c%c", 219, 219);
+        return;
+    }
+    if (this->field[x][y] == 0) {
+        printf(" ~");
+        return;
+    }
+    if (this->field[x][y] > 8) {
+        printf(" B");
+        return;
+    }
+    printf(" %d", this->field[x][y]);
+}
+
+int Field::play() {
+    int opc, x = 6, y = 10;
+    this->drawField();
+    int xSelect = 0, ySelect = 0;
+
+    while (true) {
+        setbuf(stdin, NULL);
+        opc = getch();
+        switch (opc) {
+            case UP:
+                Console::gotoxy(x, y);
+                this->printBlock(xSelect, ySelect, BLUE);
+                if (xSelect == 0) {
+                    x = this->row + 5;
+                    xSelect = this->row - 1;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                } else {
+                    x--;
+                    xSelect--;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                }
+                Console::gotoxy(20, 50);
+                break;
+            case DOWN:
+                Console::gotoxy(x, y);
+                this->printBlock(xSelect, ySelect, BLUE);
+                if (xSelect == this->row - 1) {
+                    x = 6;
+                    xSelect = 0;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                } else {
+                    x++;
+                    xSelect++;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                }
+                Console::gotoxy(20, 50);
+                break;
+            case LEFT:
+                Console::gotoxy(x, y);
+                this->printBlock(xSelect, ySelect, BLUE);
+                if (ySelect == 0) {
+                    y = (this->column * 2 + 9) - 1;
+                    ySelect = this->column - 1;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                } else {
+                    y -= 2;
+                    ySelect--;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                }
+                Console::gotoxy(20, 50);
+                break;
+            case RIGHT:
+                Console::gotoxy(x, y);
+                this->printBlock(xSelect, ySelect, BLUE);
+                if (ySelect == this->column - 1) {
+                    y = 10;
+                    ySelect = 0;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                } else {
+                    y += 2;
+                    ySelect++;
+                    Console::gotoxy(x, y);
+                    this->printBlock(xSelect, ySelect, GREEN);
+                }
+                Console::gotoxy(20, 50);
+                break;
+            case ENTER:
+                this->discoverLine(xSelect, ySelect);
+                this->drawField();
+                break;
+            case ESC:
+                if (Panel::dialogBox() == 1) {
+                    return 0;
+                }
+                this->drawField();
+                break;
+            default:
+                break;
+        }
+    }
+    Console::colorTex(BLUE);
     return 1;
+}
+
+void Field::discoverLine(int x, int y) {
+    if (x >= this->row || y >= this->column || x < 0 || y < 0) {
+        return;
+    }
+    if (this->field[x][y] > 8) {
+        this->hidden[x][y] = 0;
+        //this->.lose = 1;
+        return;
+    }
+    if (this->hidden[x][y] != 1) {
+        return;
+    }
+    //pra esquerda
+    for(int i = y; i >= 0; i--){
+        if (this->field[x][i] > 8) {
+            break;
+        }
+        if (this->field[x][i] > 0) {
+            this->discoverColumn( x, i);
+            break;
+        }
+        this->discoverColumn( x, i);
+    }
+    //Pra direita
+    for(int i = y; i < this->column; i++){
+        if (this->field[x][i] > 8) {
+            break;
+        }
+        if (this->field[x][i] > 0) {
+            this->discoverColumn( x, i);
+            break;
+        }
+        this->discoverColumn( x, i);
+    }
+}
+
+void Field::discoverColumn(int x, int y) {
+    if (x >= this->row || y >= this->column || x < 0 || y < 0) {
+        return;
+    }
+    if (this->field[x][y] > 8) {
+        this->hidden[x][y] = 0;
+        //this->.lose = 1;
+        return;
+    }
+    if (this->hidden[x][y] != 1) {
+        return;
+    }
+    //pra cima
+    for(int i = x; i >= 0; i--){
+        if (this->field[i][y] > 8) {
+            break;
+        }
+        if (this->field[i][y] > 0) {
+            this->hidden[i][y] = 0;
+            break;
+        }
+        this->hidden[i][y] = 0;
+        if(y-1 >= 0){
+            if(this->hidden[i][y-1] == 1 && this->field[i][y-1] < 9){
+                this->discoverLine(i, y-1);
+            }
+        }
+        if(y+1 < this->column){
+            if(this->hidden[i][y+1] == 1 && this->field[i][y+1] < 9){
+                this->discoverLine(i, y+1);
+            }
+        }
+    }
+    //Pra baixo
+    for(int i = x; i < this->row; i++){
+        if (this->field[i][y] > 8) {
+            break;
+        }
+        if (this->field[i][y] > 0) {
+            this->hidden[i][y] = 0;
+            break;
+        }
+        this->hidden[i][y] = 0;
+        if(y-1 >= 0){
+            if(this->hidden[i][y-1] == 1 && this->field[i][y-1] < 9){
+                this->discoverLine(i, y-1);
+            }
+        }
+        if(y+1 < this->column){
+            if(this->hidden[i][y+1] == 1 && this->field[i][y+1] < 9){
+                this->discoverLine(i, y+1);
+            }
+        }
+    }
 }

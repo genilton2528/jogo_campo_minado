@@ -16,11 +16,15 @@ public:
     int getX();
     int getY();
     int play();
+    void drawField();
+    void printBlock(int x, int y, int cor);
+    void discoverLine(int x, int y);
+    void discoverColumn(int x, int y);
 private:
     int **field;
     int **hidden;
-    int x;
-    int y;
+    int row;
+    int column;
     int bomb;
 };
 

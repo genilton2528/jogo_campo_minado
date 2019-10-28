@@ -7,7 +7,8 @@ public:
     Panel();
     ~Panel();
     int menu();
-    void header();    
+    int static dialogBox();
+    void static header();    
 private:
 };
 

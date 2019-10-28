@@ -21,9 +21,7 @@ int main() {
                 field.setField(9, 9, 10);
                 if (field.getField() != NULL && field.getHidden() != NULL) {
                     field.fillField();
-                    field.play();
-                    setbuf(stdin, NULL);
-                    getch();
+                    field.play();                    
                 } else {
                     system("cls");
                     printf("\n\n\tFalhou");

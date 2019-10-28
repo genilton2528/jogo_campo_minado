@@ -14,7 +14,7 @@
 #define ESC 27
 #define ESPACO 32
 
-Panel::Panel(){
+Panel::Panel() {
     Console::windows(25, 75);
 }
 
@@ -78,12 +78,43 @@ int Panel::menu() {
 
 void Panel::header() {
     system("cls");
+    Console::colorTex(113);
     Console::gotoxy(1, 10);
     printf("_____________________________________");
     Console::gotoxy(2, 10);
     printf("%c                                   %c", 219, 219);
     Console::gotoxy(3, 10);
-    printf("%c              Jogo Nim             %c", 219, 219);
+    printf("%c              Campo Minado         %c", 219, 219);
     Console::gotoxy(4, 10);
     printf("%c___________________________________%c", 219, 219);
+}
+
+int Panel::dialogBox() {
+    int opc;
+    system("cls");
+    Console::colorTex(113);
+    Console::gotoxy(8, 10);
+    printf(" _____________________________________ ");    
+    Console::gotoxy(9, 10);
+    printf(" %c                                   %c ", 219, 219);
+    Console::gotoxy(10, 10);
+    printf(" %c        Voce quer sair%c            %c ", 219, 63, 219);
+    Console::gotoxy(11, 10);
+    printf(" %c                                   %c ", 219, 219);
+    Console::gotoxy(12, 10);
+    printf(" %c  [Esc] Sair    [Enter] Continuar  %c ", 219, 219);
+    Console::gotoxy(13, 10);
+    printf(" %c___________________________________%c ", 219, 219);
+
+    while (true) {
+        setbuf(stdin,NULL);
+        opc = getch();
+        switch (opc) {
+            case ESC:
+                return 1;
+            case ENTER:
+                return 0;
+        }
+    }
+    return 0;
 }

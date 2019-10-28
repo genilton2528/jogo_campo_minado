@@ -17,8 +17,7 @@ void Console::colorTex(int COLOR) {
 
 void Console::windows(int y, int x) {
     system("title Jogo Campo Minado - Genilton");
-    system("color 71");
-
+    Console::colorTex(113);
     COORD outbuff;
     outbuff.X = x;
     outbuff.Y = y;
