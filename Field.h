@@ -1,5 +1,6 @@
 #ifndef FIELD_H
 #define FIELD_H
+#include "Player.h"
 
 class Field {
 public:
@@ -15,17 +16,19 @@ public:
     int** getHidden();
     int getX();
     int getY();
-    int play();
+    void play();
     void drawField();
     void printBlock(int x, int y, int cor);
     void discoverLine(int x, int y);
     void discoverColumn(int x, int y);
+    void youWin();
 private:
     int **field;
     int **hidden;
     int row;
     int column;
     int bomb;
+    Player player;
 };
 
 #endif

@@ -1,7 +1,7 @@
 echo off
 cls
-echo "Copilando"
+echo Compilando...
 g++ -Wall -o main main.cpp Panel.cpp Console.cpp Field.cpp Player.cpp
 cls
-echo "Pronto"
+echo Pronto
 start main.lnk

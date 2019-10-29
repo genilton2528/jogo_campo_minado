@@ -4,11 +4,10 @@
 class Records {
 public:
     Records();
-    Records(const Records& orig);
-    virtual ~Records();
+    ~Records();
 private:
-
+    
 };
 
-#endif /* RECORDS_H */
+#endif
 

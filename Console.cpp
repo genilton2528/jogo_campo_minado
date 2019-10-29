@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <string.h>
 #include "Console.h"
 
 Console::Console() {
@@ -26,4 +27,13 @@ void Console::windows(int y, int x) {
     Sleep(130);
     SMALL_RECT windowSize = {(short) 0, (short) 0, (short) --x, (short) --y};
     SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+}
+
+void Console::clip(char *str, int n){
+    for(int i = 0; i < n; i++){
+        if(str[i] == '\n'){
+            str[i] = '\0';
+            break;
+        }
+    }
 }

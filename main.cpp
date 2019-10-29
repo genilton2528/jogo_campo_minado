@@ -12,7 +12,6 @@ int main() {
     int opc, x, y, bomb;
     Field field;
     Panel panel;
-    Player player;
 
     while (true) {
         opc = panel.menu();
@@ -21,7 +20,7 @@ int main() {
                 field.setField(9, 9, 10);
                 if (field.getField() != NULL && field.getHidden() != NULL) {
                     field.fillField();
-                    field.play();                    
+                    field.play(); 
                 } else {
                     system("cls");
                     printf("\n\n\tFalhou");

@@ -7,21 +7,22 @@ Player::Player() {
 Player::~Player() {
 }
 
-int Player::isLose(){
+int Player::isLose() {
     return this->lose;
 }
 
-int Player::isWin(){
+int Player::isWin() {
     return this->win;
 }
 
-char* Player::getNome(){
+char* Player::getNome() {
     return this->nome;
 }
 
 void Player::setNome(char nome[]) {
-    strcpy( this->nome, nome);
+    strcpy(this->nome, nome);
 }
+
 void Player::setLose(int lose) {
     this->lose = lose;
 }
@@ -29,3 +30,12 @@ void Player::setLose(int lose) {
 void Player::setWin(int win) {
     this->win = win;
 }
+
+float Player::getTimer() {
+    return timer;
+}
+
+void Player::setTimer(float timer) {
+    this->timer = timer;
+}
+

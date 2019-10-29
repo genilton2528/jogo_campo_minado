@@ -8,8 +8,8 @@ public:
     void static gotoxy(int x, int y);
     void static colorTex(int COLOR);
     void static windows(int x, int y);
+    void static clip(char *str, int n);
 private:
-
 };
 
 #endif

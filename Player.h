@@ -11,10 +11,13 @@ public:
     void setNome(char nome[]);
     int isLose();
     int isWin();
-    char* getNome();    
+    char* getNome();
+    float getTimer();
+    void setTimer(float timer);
 
 private:
-    char nome[50];
+    char nome[51];
+    float timer;
     int win;
     int lose;
 };

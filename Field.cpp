@@ -174,6 +174,10 @@ void Field::printBlock(int x, int y, int color) {
         printf("%c%c", 219, 219);
         return;
     }
+    if (this->hidden[x][y] == 2) {
+        printf(" !");
+        return;
+    }
     if (this->field[x][y] == 0) {
         printf(" ~");
         return;
@@ -185,12 +189,20 @@ void Field::printBlock(int x, int y, int color) {
     printf(" %d", this->field[x][y]);
 }
 
-int Field::play() {
-    int opc, x = 6, y = 10;
-    this->drawField();
-    int xSelect = 0, ySelect = 0;
+void Field::play() {
+    this->player.setLose(0);
+    this->player.setWin(0);
+    clock_t timer;
+    int opc, x = 6, y = 10, xSelect = 0, ySelect = 0;
+    
+    printf("\n\n\tDigite seu nome: ");
+    setbuf(stdin, NULL);
+    fgets(player.getNome(), 50, stdin);
+    Console::clip( player.getNome(), 51);
 
-    while (true) {
+    this->drawField();
+    timer = clock();
+    while (this->player.isWin() == 0 && this->player.isLose() == 0) {
         setbuf(stdin, NULL);
         opc = getch();
         switch (opc) {
@@ -261,19 +273,46 @@ int Field::play() {
             case ENTER:
                 this->discoverLine(xSelect, ySelect);
                 this->drawField();
+                this->youWin();
                 break;
             case ESC:
                 if (Panel::dialogBox() == 1) {
-                    return 0;
+                    return;
                 }
                 this->drawField();
+                break;
+            case ESPACO:
+                this->hidden[xSelect][ySelect] = 2;
+                Console::gotoxy(x, y);
+                this->printBlock(xSelect, ySelect, GREEN);
+                this->youWin();
                 break;
             default:
                 break;
         }
     }
     Console::colorTex(BLUE);
-    return 1;
+    timer = clock() - timer;
+    this->player.setTimer((float)timer/CLOCKS_PER_SEC);
+    if(this->player.isWin() == 1){
+        system("cls");
+        printf("\n\n\t _____________________________________ ");    
+        printf("\n\t %c                                   %c ", 219, 219);
+        printf("\n\t %c        Voce Ganhou                %c ", 219, 219);
+        printf("\n\t %c___________________________________%c ", 219, 219);
+        printf("\n\n\t - %s %.2f", player.getNome(), player.getTimer());
+        setbuf(stdin, NULL);
+        getch();        
+    }else{
+        system("cls");
+        printf("\n\n\t _____________________________________ ");    
+        printf("\n\t %c                                   %c ", 219, 219);
+        printf("\n\t %c        Voce Perdeu                %c ", 219, 219);
+        printf("\n\t %c___________________________________%c ", 219, 219);
+        printf("\n\n\t - %s %.2f", player.getNome(), player.getTimer());
+        setbuf(stdin, NULL);
+        getch();    
+    }
 }
 
 void Field::discoverLine(int x, int y) {
@@ -282,33 +321,33 @@ void Field::discoverLine(int x, int y) {
     }
     if (this->field[x][y] > 8) {
         this->hidden[x][y] = 0;
-        //this->.lose = 1;
+        this->player.setLose(1);
         return;
     }
     if (this->hidden[x][y] != 1) {
         return;
     }
     //pra esquerda
-    for(int i = y; i >= 0; i--){
+    for (int i = y; i >= 0; i--) {
         if (this->field[x][i] > 8) {
             break;
         }
         if (this->field[x][i] > 0) {
-            this->discoverColumn( x, i);
+            this->discoverColumn(x, i);
             break;
         }
-        this->discoverColumn( x, i);
+        this->discoverColumn(x, i);
     }
     //Pra direita
-    for(int i = y; i < this->column; i++){
+    for (int i = y; i < this->column; i++) {
         if (this->field[x][i] > 8) {
             break;
         }
         if (this->field[x][i] > 0) {
-            this->discoverColumn( x, i);
+            this->discoverColumn(x, i);
             break;
         }
-        this->discoverColumn( x, i);
+        this->discoverColumn(x, i);
     }
 }
 
@@ -318,14 +357,14 @@ void Field::discoverColumn(int x, int y) {
     }
     if (this->field[x][y] > 8) {
         this->hidden[x][y] = 0;
-        //this->.lose = 1;
+        this->player.setLose(1);
         return;
     }
     if (this->hidden[x][y] != 1) {
         return;
     }
     //pra cima
-    for(int i = x; i >= 0; i--){
+    for (int i = x; i >= 0; i--) {
         if (this->field[i][y] > 8) {
             break;
         }
@@ -334,19 +373,19 @@ void Field::discoverColumn(int x, int y) {
             break;
         }
         this->hidden[i][y] = 0;
-        if(y-1 >= 0){
-            if(this->hidden[i][y-1] == 1 && this->field[i][y-1] < 9){
-                this->discoverLine(i, y-1);
+        if (y - 1 >= 0) {
+            if (this->hidden[i][y - 1] == 1 && this->field[i][y - 1] < 9) {
+                this->discoverLine(i, y - 1);
             }
         }
-        if(y+1 < this->column){
-            if(this->hidden[i][y+1] == 1 && this->field[i][y+1] < 9){
-                this->discoverLine(i, y+1);
+        if (y + 1 < this->column) {
+            if (this->hidden[i][y + 1] == 1 && this->field[i][y + 1] < 9) {
+                this->discoverLine(i, y + 1);
             }
         }
     }
     //Pra baixo
-    for(int i = x; i < this->row; i++){
+    for (int i = x; i < this->row; i++) {
         if (this->field[i][y] > 8) {
             break;
         }
@@ -355,15 +394,29 @@ void Field::discoverColumn(int x, int y) {
             break;
         }
         this->hidden[i][y] = 0;
-        if(y-1 >= 0){
-            if(this->hidden[i][y-1] == 1 && this->field[i][y-1] < 9){
-                this->discoverLine(i, y-1);
+        if (y - 1 >= 0) {
+            if (this->hidden[i][y - 1] == 1 && this->field[i][y - 1] < 9) {
+                this->discoverLine(i, y - 1);
             }
         }
-        if(y+1 < this->column){
-            if(this->hidden[i][y+1] == 1 && this->field[i][y+1] < 9){
-                this->discoverLine(i, y+1);
+        if (y + 1 < this->column) {
+            if (this->hidden[i][y + 1] == 1 && this->field[i][y + 1] < 9) {
+                this->discoverLine(i, y + 1);
             }
         }
+    }
+}
+
+void Field::youWin() {
+    int count = 0;
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->column; j++) {
+            if(this->hidden[i][j] != 0){
+                count++;
+            }
+        }
+    }
+    if(count == this->bomb){
+        this->player.setWin(1);
     }
 }
